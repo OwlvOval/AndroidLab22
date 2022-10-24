@@ -25,16 +25,15 @@ public class VtoroyActivity extends AppCompatActivity {
         Button b4 = findViewById(R.id.button4);
         ListView list = findViewById(R.id.list);
         EditText textPaint = findViewById(R.id.editTextTextPersonName2);
-//        final String[] catNames = new String[] {
-//                "Рыжик", "Барсик", "Мурзик", "Мурка", "Васька",
-//                "Томасина", "Кристина", "Пушок", "Дымка", "Кузя",
-//                "Китти", "Масяня", "Симба"
-//        };
+        Bundle lb = this.getIntent().getExtras();
 
-
+        //catNames.add(lb.getString("h"));
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, catNames);
+        list.setAdapter(adapter);
+        catNames.add(lb.getString("h"));
+        adapter.notifyDataSetChanged();
         b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
