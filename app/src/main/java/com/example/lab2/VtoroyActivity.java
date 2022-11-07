@@ -2,8 +2,11 @@ package com.example.lab2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextPaint;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -12,10 +15,22 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class VtoroyActivity extends AppCompatActivity {
     String item;
     ArrayList<String> catNames = new ArrayList<String>();
+    HashSet<String> set = new HashSet<String>();
+    Map<String, ?> map = new HashMap<>();
+    SharedPreferences settingEnter;
+    SharedPreferences.Editor editor;
+    SharedPreferences settingEnter1;
+    SharedPreferences.Editor editor1;
+    private static final String NAME = "name";
+    private static final String PASSWORD = "password";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,12 +43,22 @@ public class VtoroyActivity extends AppCompatActivity {
         Bundle lb = this.getIntent().getExtras();
 
         //catNames.add(lb.getString("h"));
-
+        settingEnter = this.getSharedPreferences("shr", Context.MODE_PRIVATE);
+        settingEnter1 = this.getSharedPreferences("shrr", Context.MODE_PRIVATE);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, catNames);
         list.setAdapter(adapter);
-        catNames.add(lb.getString("h"));
+       // catNames.add(lb.getString("h"));
+        //settingEnter.getString(NAME, "");
+       map = settingEnter.getAll();
+        ArrayList<?> values = new ArrayList<>(map.values());
+        for (int i=0; i<values.size(); i++){
+            catNames.add(values.get(i).toString());
+            Log.i("jko =", values.get(i).toString());
+        }
+
         adapter.notifyDataSetChanged();
+
         b3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,4 +84,13 @@ public class VtoroyActivity extends AppCompatActivity {
         });
 
     }
+    @Override
+    protected void onPause () {
+        super.onPause();
+        Log.i("ON PAUSE", "Pause");
+        editor = settingEnter.edit();
+        editor.putString(NAME,catNames.get(0));
+        editor.apply();
+    }
+
 }
